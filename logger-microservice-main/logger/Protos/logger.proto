@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package logger;
+
+import "google/protobuf/timestamp.proto";
+
+enum Severity {
+  INFO = 0;
+  WARNING = 1;
+  ERROR = 2;
+  FATAL = 3;
+}
+
+message VariantData {
+  string msg = 1;
+  Severity severity = 2;
+  string trace = 3;
+}
+
+message InvariantData {
+  string msg = 1;
+  Severity severity = 2;
+  string trace = 3;
+}
+
+message Logger {
+    uint64 user_id = 1;
+    string event_type = 2;
+    google.protobuf.Timestamp timestamp = 3;
+    string src_service = 4; 
+    InvariantData invariant_data = 5;
+    VariantData variant_data = 6; 
+}
+
+message CreateRequest {
+  Logger logger = 1;
+}
+
+message CreateResponse {
+  bool success = 1;
+  uint64 id = 2;
+}
+
+message ReadRequest {
+
+}
+
+message ReadResponse {
+  repeated Logger logger = 1;
+}
+
+message ReadRequestById {
+  uint64 user_id = 1;
+}
+
+message ReadResponseById {
+  repeated Logger logger = 1;
+}
+
+service LoggerService {
+  rpc CreateLog (CreateRequest) returns (CreateResponse) {}
+  rpc ReadLog (ReadRequest) returns (ReadResponse) {}
+  rpc ReadLogById (ReadRequestById) returns (ReadResponseById) {}
+}

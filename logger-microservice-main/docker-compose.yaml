@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+    logger:
+        build:
+            context: .
+            dockerfile: DockerFile
+        image: logger
+        networks:
+            - microservices
+        ports:
+            - 5000:5000
+
+networks:
+    microservices:
